@@ -6,7 +6,8 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { pathToRegexp } from 'path-to-regexp';
+// import { pathToRegexp } from 'path-to-regexp';
+import { match } from 'path-to-regexp';
 import { ALLOW_NO_PERMISSION } from 'src/common/decorators/permission.decorator';
 import { PermissionService } from 'src/permission/permission.service';
 import { ALLOW_NO_TOKEN } from 'src/common/decorators/token.decorator';
@@ -53,7 +54,9 @@ export class RoleAuthGuard implements CanActivate {
         const reqUrl = req.url.split('?')[0];
         console.log('当前请求URL：', reqUrl);
 
-        return !!pathToRegexp(route.url).exec(reqUrl.replace('/api', ''));
+        // return !!pathToRegexp(route.url).exec(reqUrl.replace('/api', ''));
+        const matcher = match(route.url, { decode: decodeURIComponent });
+        return !!matcher(reqUrl.replace('/api', ''));
       }
       return false;
     });
