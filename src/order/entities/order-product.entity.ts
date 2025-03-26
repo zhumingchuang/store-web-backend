@@ -1,4 +1,9 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('store_order_product')
 export class OrderProductEntity {
@@ -10,5 +15,4 @@ export class OrderProductEntity {
 
   @Column({ type: 'int', comment: '订单id' })
   orderId: number;
-
 }

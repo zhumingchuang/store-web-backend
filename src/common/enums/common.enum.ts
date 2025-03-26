@@ -3,7 +3,7 @@ export enum UserType {
   // 超管
   ADMIN_USER = 0,
   // 普通用户
-  NORMAL_USER = 1
+  NORMAL_USER = 1,
 }
 
 export enum ActivityStatus {
@@ -12,7 +12,7 @@ export enum ActivityStatus {
   // 进行中
   IN_PROGRESS = 1,
   // 已结束
-  END = 2
+  END = 2,
 }
 
 export enum PermissionType {
@@ -23,5 +23,5 @@ export enum PermissionType {
   // 组件
   COMPONENT = 2,
   // 按钮
-  BUTTON = 3
+  BUTTON = 3,
 }

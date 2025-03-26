@@ -20,7 +20,7 @@ import { extname } from 'path';
       // 定义存储引擎
       storage: diskStorage({
         // 定义文件存储的目录
-        destination: './uploads', 
+        destination: './uploads',
         filename: (_, file, cb) => {
           // 创建随机文件名
           const randomName = Array(32)
@@ -30,7 +30,6 @@ import { extname } from 'path';
           return cb(null, `${randomName}${extname(file.originalname)}`);
         },
       }),
-      
     }),
   ],
   controllers: [SysController],

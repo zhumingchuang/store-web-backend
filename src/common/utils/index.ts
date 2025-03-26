@@ -1,14 +1,17 @@
-import { RedisKeyPrefix } from "../enums/redis-key.enum";
+import { RedisKeyPrefix } from '../enums/redis-key.enum';
 
-export function getRedisKey(moduleKey: RedisKeyPrefix, id?: number | string): string {
-  return `${moduleKey}${id || ''}`
+export function getRedisKey(
+  moduleKey: RedisKeyPrefix,
+  id?: number | string,
+): string {
+  return `${moduleKey}${id || ''}`;
 }
 
 export interface ListToTreeOptions {
-  root?: string | number
-  pidKey?: string
-  idKey?: string
-  childKey?: string
+  root?: string | number;
+  pidKey?: string;
+  idKey?: string;
+  childKey?: string;
 }
 
 /**
@@ -18,18 +21,24 @@ export interface ListToTreeOptions {
  */
 export function listToTree(
   source: any[],
-  { root = 0, pidKey = 'pid', idKey = 'id', childKey = 'children' }: ListToTreeOptions
+  {
+    root = 0,
+    pidKey = 'pid',
+    idKey = 'id',
+    childKey = 'children',
+  }: ListToTreeOptions,
 ) {
   function getNode(id: string | number) {
-    const node = []
+    const node = [];
     for (let i = 0, len = source.length; i < len; i++) {
       if (source[i][pidKey] === id) {
-        const children = getNode(source[i][idKey])
-        if (children.length > 0) source[i][childKey] = children
-        node.push(source[i])
+        const children = getNode(source[i][idKey]);
+        if (children.length > 0) source[i][childKey] = children;
+        node.push(source[i]);
       }
     }
-    return node
+    return node;
   }
-  return getNode(root)
+
+  return getNode(root);
 }

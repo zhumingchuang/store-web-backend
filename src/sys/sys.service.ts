@@ -30,20 +30,22 @@ export class SysService {
     if (!email) {
       throw new HttpException('邮箱不能为空', HttpStatus.EXPECTATION_FAILED);
     }
-    const exists = await this.userRepository.findOneBy({email})
+    const exists = await this.userRepository.findOneBy({ email });
     // 1. 判断当前的邮箱与用户注册邮箱是否一致
     if (!exists) {
-      throw new HttpException('当前用户未绑定该邮箱，请检查后重试', HttpStatus.EXPECTATION_FAILED);
+      throw new HttpException(
+        '当前用户未绑定该邮箱，请检查后重试',
+        HttpStatus.EXPECTATION_FAILED,
+      );
     }
     // 2. 发送邮箱验证码
-    const { code } = await this.mailService.sendMail(email, '找回密码验证码')
+    const { code } = await this.mailService.sendMail(email, '找回密码验证码');
 
     // 缓存Redis
     const redisKey = getRedisKey(RedisKeyPrefix.PASSWORD_RESET, exists.id);
-    await this.redisService.set(redisKey, code, 60*5); // 5分钟有效
-    return '验证码已发送至邮箱，请注意查收'
+    await this.redisService.set(redisKey, code, 60 * 5); // 5分钟有效
+    return '验证码已发送至邮箱，请注意查收';
   }
-  
 
   /**
    * 发送注册邮件验证码
@@ -53,17 +55,17 @@ export class SysService {
    * @returns 返回发送成功信息
    */
   async sendMailForRegistry(email: string, text: string) {
-    const { code } = await this.mailService.sendMail(email, text)
+    const { code } = await this.mailService.sendMail(email, text);
     // 缓存Redis
     const redisKey = getRedisKey(RedisKeyPrefix.REGISTRY_CODE, email);
-    await this.redisService.set(redisKey, code, 60*5); 
+    await this.redisService.set(redisKey, code, 60 * 5);
     return '发送成功';
   }
 
   async upload(file: Express.Multer.File, type: string) {
     return {
       url: `http://localhost:3333/${file.path}`,
-      type
-    }
+      type,
+    };
   }
 }

@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('store_role_permission')
 export class RolePermissionEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ type: 'int', comment: '角色id' })
-  roleId: number
+  roleId: number;
 
   @Column({ type: 'int', comment: '权限集id' })
-  permissionId: number
+  permissionId: number;
 }

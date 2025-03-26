@@ -14,7 +14,7 @@ export class ResponseInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.getArgByIndex(1).req;
-    const res = context.switchToHttp().getResponse()
+    const res = context.switchToHttp().getResponse();
     return next.handle().pipe(
       map((data) => {
         const logFormat = `
@@ -29,7 +29,7 @@ Response data: ${data.socket ? null : JSON.stringify(data)}
         return {
           data,
           code: res.statusCode,
-          success: true
+          success: true,
         };
       }),
     );

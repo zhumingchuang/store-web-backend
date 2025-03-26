@@ -4,6 +4,6 @@ import { ExcelController } from './excel.controller';
 
 @Module({
   controllers: [ExcelController],
-  providers: [ExcelService]
+  providers: [ExcelService],
 })
 export class ExcelModule {}

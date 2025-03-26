@@ -12,6 +12,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     ScheduleModule.forRoot(),
   ],
   controllers: [ActivityController],
-  providers: [ActivityService, StartActivityCron]
+  providers: [ActivityService, StartActivityCron],
 })
 export class ActivityModule {}

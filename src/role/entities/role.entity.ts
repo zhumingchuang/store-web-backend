@@ -1,22 +1,28 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('store_role')
 export class RoleEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ type: 'varchar', length: 50, comment: '角色名称' })
-  name: string
-  
-  @Column({ type: 'varchar', length: 255, comment: '角色描述'})
-  desc: string
+  name: string;
+
+  @Column({ type: 'varchar', length: 255, comment: '角色描述' })
+  desc: string;
 
   @CreateDateColumn({ type: 'timestamp', comment: '创建时间' })
-  createTime: Date
+  createTime: Date;
 
   @UpdateDateColumn({ type: 'timestamp', comment: '更新时间' })
-  updateTime: Date
+  updateTime: Date;
 
   @Column({ type: 'int', comment: '是否为系统内置 0 否 1 是', default: 0 })
-  isSystem: number
+  isSystem: number;
 }

@@ -4,5 +4,5 @@ import { IsNotEmpty } from 'class-validator';
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {
   @IsNotEmpty()
-  id: number
+  id: number;
 }

@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Inject, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Inject,
+  Query,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { SysService } from './sys.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
@@ -6,6 +15,7 @@ import { UserService } from 'src/user/user.service';
 import { ForgotUserDto } from './dto/forgot-user.dto';
 import { AllowNoToken } from 'src/common/decorators/token.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
+
 @Controller('sys')
 export class SysController {
   @Inject(UserService)
@@ -33,6 +43,7 @@ export class SysController {
   forgot(@Body() forgotUserDto: ForgotUserDto) {
     return this.userService.updatePassword(forgotUserDto);
   }
+
   // 发送找回密码邮箱验证码
   @Get('sendEmailForGorgot')
   @AllowNoToken()
@@ -44,13 +55,16 @@ export class SysController {
   @Get('sendEmailForRegistry')
   @AllowNoToken()
   sendEmailForRegistry(@Query() dto: { email: string }) {
-    return this.sysService.sendMailForRegistry(dto.email,'注册验证码');
+    return this.sysService.sendMailForRegistry(dto.email, '注册验证码');
   }
 
   // 上传文件
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File, @Body() data: { type: string }) {
-    return this.sysService.upload(file, data.type)
+  uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() data: { type: string },
+  ) {
+    return this.sysService.upload(file, data.type);
   }
 }

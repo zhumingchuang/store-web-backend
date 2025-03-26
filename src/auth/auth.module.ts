@@ -4,10 +4,8 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 
 @Module({
-  imports: [
-    forwardRef(() => UserModule),
-  ],
+  imports: [forwardRef(() => UserModule)],
   providers: [AuthService, JwtStrategy],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}

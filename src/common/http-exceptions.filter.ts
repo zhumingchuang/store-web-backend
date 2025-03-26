@@ -12,6 +12,7 @@ import { Logger } from 'src/common/logger/logger';
 export class HttpExceptionsFilter implements ExceptionFilter {
   @Inject(Logger)
   private loggger: Logger;
+
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();

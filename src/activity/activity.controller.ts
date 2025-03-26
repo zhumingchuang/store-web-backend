@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  Query,
+} from '@nestjs/common';
 import { ActivityService } from './activity.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
@@ -29,7 +39,7 @@ export class ActivityController {
   }
 
   @Get('delete/:id')
-  delete(@Param('id') id: string ) {
+  delete(@Param('id') id: string) {
     return this.activityService.delete(+id);
   }
 }

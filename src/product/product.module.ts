@@ -10,6 +10,6 @@ import { ExcelService } from 'src/common/excel/excel.service';
   imports: [TypeOrmModule.forFeature([ProductEntity])],
   controllers: [ProductController],
   providers: [ProductService, HotSalesService, ExcelService],
-  exports: [HotSalesService]
+  exports: [HotSalesService],
 })
 export class ProductModule {}

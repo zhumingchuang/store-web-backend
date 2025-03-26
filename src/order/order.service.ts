@@ -13,13 +13,13 @@ import { HotSalesService } from 'src/product/hot-sales.service';
 @Injectable()
 export class OrderService {
   @InjectRepository(OrderEntity)
-  private orderRepository: Repository<OrderEntity>
+  private orderRepository: Repository<OrderEntity>;
 
   @InjectRepository(ProductEntity)
-  private productRepository: Repository<ProductEntity>
+  private productRepository: Repository<ProductEntity>;
 
   @Inject(HotSalesService)
-  private hotSalesService: HotSalesService
+  private hotSalesService: HotSalesService;
 
   /**
    * 创建订单
@@ -29,16 +29,16 @@ export class OrderService {
    * @throws HttpException 抛出HTTP异常
    */
   async create(createOrderDto: CreateOrderDto) {
-    const { productId, discount = 1, status = 0, count } = createOrderDto
+    const { productId, discount = 1, status = 0, count } = createOrderDto;
     // 获取商品信息
-    const product = await this.productRepository.findOneBy({ id: productId })
+    const product = await this.productRepository.findOneBy({ id: productId });
     if (!product) {
-      throw new HttpException('商品不存在', HttpStatus.NOT_FOUND)
+      throw new HttpException('商品不存在', HttpStatus.NOT_FOUND);
     }
     // 获取开单商品计算价格
-    let totalPrice = product.price * count
-    let discountPrice = totalPrice * discount
-    let orderItem =  {
+    let totalPrice = product.price * count;
+    let discountPrice = totalPrice * discount;
+    let orderItem = {
       ...createOrderDto,
       name: product.name,
       price: totalPrice,
@@ -46,14 +46,16 @@ export class OrderService {
       count,
       productId,
       discountPrice,
-      discount
-    }
-    const order = await this.orderRepository.save(plainToClass(OrderEntity, orderItem))
+      discount,
+    };
+    const order = await this.orderRepository.save(
+      plainToClass(OrderEntity, orderItem),
+    );
     if (!order) {
-      throw new HttpException('开单失败', HttpStatus.INTERNAL_SERVER_ERROR)
+      throw new HttpException('开单失败', HttpStatus.INTERNAL_SERVER_ERROR);
     }
     // 缓存销量到Redis做排行榜
-    await this.hotSalesService.addProductSales(String(productId), count)
+    await this.hotSalesService.addProductSales(String(productId), count);
     return '开单成功';
   }
 
@@ -64,21 +66,21 @@ export class OrderService {
    * @returns 返回一个包含订单列表和总条数的对象
    */
   async getOrderList(orderListDto: OrderListDto) {
-    const { page, pageSize, id, status } = orderListDto
+    const { page, pageSize, id, status } = orderListDto;
     const where = {
       ...(id ? { id } : null),
-      ...(status ? { status } : null)
-    }
+      ...(status ? { status } : null),
+    };
     const [list, total] = await this.orderRepository.findAndCount({
       where,
       order: { id: 'DESC' },
       skip: pageSize * (page - 1),
-      take: pageSize
+      take: pageSize,
     });
     return {
       list,
-      total
-    }
+      total,
+    };
   }
 
   /**
@@ -90,17 +92,19 @@ export class OrderService {
    * @throws 当查询订单商品失败时，抛出 HttpException 异常，状态码为 NOT_FOUND
    */
   async getOrderDetail(id: number) {
-    const order = await this.orderRepository.findOneBy({ id })
+    const order = await this.orderRepository.findOneBy({ id });
     if (!order) {
-      throw new HttpException('订单不存在', HttpStatus.NOT_FOUND)
+      throw new HttpException('订单不存在', HttpStatus.NOT_FOUND);
     }
-    const product = await this.productRepository.findOneBy({ id: order.productId })
+    const product = await this.productRepository.findOneBy({
+      id: order.productId,
+    });
     if (!product) {
-      throw new HttpException('查询订单商品失败', HttpStatus.NOT_FOUND)
+      throw new HttpException('查询订单商品失败', HttpStatus.NOT_FOUND);
     }
     return {
       ...order,
-      product
+      product,
     };
   }
 
@@ -114,12 +118,15 @@ export class OrderService {
    * @throws 当修改失败时，抛出 HttpException 异常，状态码为 INTERNAL_SERVER_ERROR
    */
   async updateOrder(updateOrderDto: UpdateOrderDto, currentUser: UserEntity) {
-    const { id, status, desc = '' } = updateOrderDto
-    const exists = this.orderRepository.findOneBy({ id })
+    const { id, status, desc = '' } = updateOrderDto;
+    const exists = this.orderRepository.findOneBy({ id });
     if (!exists) {
       throw new HttpException('订单不存在或已删除', HttpStatus.NOT_FOUND);
     }
-    const { affected } = await this.orderRepository.update({ id }, { status, desc })
+    const { affected } = await this.orderRepository.update(
+      { id },
+      { status, desc },
+    );
     if (!affected) {
       throw new HttpException('修改失败', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -135,11 +142,11 @@ export class OrderService {
    * @throws 如果订单不存在或已删除，则抛出404错误；如果删除失败，则抛出500错误
    */
   async delete(id: number) {
-    const exists = await this.orderRepository.findOneBy({ id })
+    const exists = await this.orderRepository.findOneBy({ id });
     if (!exists) {
       throw new HttpException('订单不存在或已删除', HttpStatus.NOT_FOUND);
     }
-    const { affected } = await this.orderRepository.delete({ id })
+    const { affected } = await this.orderRepository.delete({ id });
     if (!affected) {
       throw new HttpException('删除失败', HttpStatus.INTERNAL_SERVER_ERROR);
     }

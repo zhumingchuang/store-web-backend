@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('store_user_role')
 export class UserRoleEntity {
   @PrimaryGeneratedColumn()
-  id: number
+  id: number;
 
   @Column({ type: 'int', comment: '用户id' })
-  userId: number
+  userId: number;
 
   @Column({ type: 'int', comment: '角色id' })
-  roleId: number
+  roleId: number;
 }

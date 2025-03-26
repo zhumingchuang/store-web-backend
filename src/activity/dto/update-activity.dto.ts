@@ -4,7 +4,7 @@ import { IsNotEmpty } from 'class-validator';
 
 export class UpdateActivityDto extends PartialType(CreateActivityDto) {
   @IsNotEmpty({ message: '活动id不能为空' })
-  id: number
-  
-  status?: number
+  id: number;
+
+  status?: number;
 }

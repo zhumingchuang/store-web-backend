@@ -5,7 +5,8 @@ import { Logger } from 'src/common/logger/logger';
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
   @Inject(Logger)
-  private logger: Logger
+  private logger: Logger;
+
   use(req: Request, res: Response, next: NextFunction) {
     const statusCode = res.statusCode;
     const logFormat = `
@@ -21,7 +22,7 @@ Body: ${JSON.stringify(req.body)}
 `;
 
     next();
-    
+
     if (statusCode >= 500) {
       this.logger.error(logFormat, 'Request LoggerMiddleware');
     } else if (statusCode >= 400) {
