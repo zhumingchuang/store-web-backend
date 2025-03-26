@@ -18,21 +18,19 @@ import { PermissionEntity } from 'src/permission/entities/permission.entity';
     forwardRef(() => AuthModule),
     // 新增jwt模块
     JwtModule.registerAsync({
-      useFactory: async (configService: ConfigService) => (
-        {
-          // 读取配置中的secret
-          secret: configService.get<string>('JWT_SECRET'),
-          signOptions: { 
-            expiresIn: configService.get<string>('JWT_EXPIRE_TIME') 
-          },
-        }
-      ),
+      useFactory: async (configService: ConfigService) => ({
+        // 读取配置中的secret
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRE_TIME'),
+        },
+      }),
       // 将 ConfigService 注入到工厂函数中
-      inject: [ConfigService], 
-    }), 
+      inject: [ConfigService],
+    }),
   ],
   controllers: [UserController],
   providers: [UserService, MailService],
-  exports: [UserService]
+  exports: [UserService],
 })
 export class UserModule {}
