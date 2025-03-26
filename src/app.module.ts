@@ -28,6 +28,7 @@ import { CrawlerModule } from 'src/common/crawler/crawler.module';
     SysModule,
     LoggerModule,
     TypeOrmModule.forRootAsync({
+      imports: [ConfigModule], // 添加 imports 属性
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
         return {
@@ -50,8 +51,8 @@ import { CrawlerModule } from 'src/common/crawler/crawler.module';
         process.env.NODE_ENV === 'docker'
           ? '.env.docker'
           : process.env.NODE_ENV === 'production'
-          ? '.env.production'
-          : '.env',
+            ? '.env.production'
+            : '.env',
       isGlobal: true,
     }),
     RoleModule,
